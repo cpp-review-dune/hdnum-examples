@@ -1,11 +1,10 @@
-#include <iostream>
 #include <hdnum/src/timer.hh>
+#include <iostream>
 
 int main()
 {
   hdnum::Timer T;
-  for (unsigned int i = 0; i < 1000000000; i++)
-  {
+  for (unsigned int i = 0; i < 1000000000; i++) {
     ;
   }
 

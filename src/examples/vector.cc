@@ -8,8 +8,8 @@ int main()
 {
   hdnum::Vector<double> x(4);
   hdnum::unitvector(x, 2);
-  std::cout << "x=" << x << std::endl
-            << "||x||=" << x.two_norm() << std::endl;
+  std::cout << "x = " << x << std::endl
+            << "||x|| = " << x.two_norm() << std::endl;
 
   x.resize(x.size() / 2);
   std::cout << x << std::endl;
@@ -19,8 +19,7 @@ int main()
   hdnum::Vector<std::complex<double>> z(y);
   z = 10 * PI + 50i * PI;
 
-  std::cout << "y=" << y << std::endl
-            << "z=" << z << std::endl;
+  std::cout << "y=" << y << std::endl << "z=" << z << std::endl;
 
   std::cout << "z precision is " << z.precision() << "." << std::endl;
   z.precision(20);
