@@ -1,4 +1,4 @@
-image: ghcr.io/cpp-review-dune/introductory-review/hdnum
+image: ghcr.io/cpp-review-dune/introductory-review/xeus-cling-hdnum-git
 
 github:
   prebuilds:
