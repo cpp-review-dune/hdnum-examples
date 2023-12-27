@@ -3,3 +3,5 @@ build
 *.dat
 .venv
 _build
+*.gp
+*.dat

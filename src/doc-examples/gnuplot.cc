@@ -2,7 +2,6 @@
 
 int main()
 {
-
   const double PI = std::acos(-1);
   hdnum::Vector<double> x(1);
   x = PI;

@@ -6,4 +6,8 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
 )
 
-add_subdirectory(examples)
+# https://stackoverflow.com/a/29309437/9302545
+find_package(GMP REQUIRED)
+
+add_subdirectory(doc-examples)
+add_subdirectory(hdnum-examples)
