@@ -1,17 +1,22 @@
-add_executable(ecke ecke.cc)
-add_executable(eemodelproblem eemodelproblem.cc)
-add_executable(fem1d_linear fem1d_linear.cc)
-add_executable(fem1d_quadratic fem1d_quadratic.cc)
-add_executable(hodgkinhuxley hodgkinhuxley.cc)
-add_executable(iemodelproblem iemodelproblem.cc)
-add_executable(linearoscillator linearoscillator.cc)
+set(num1_sources
+  ecke
+  eemodelproblem
+  fem1d_linear
+  fem1d_quadratic
+  hodgkinhuxley
+  iemodelproblem
+  linearoscillator
+  modelproblem_high_dim
+  modelproblem_runge_kutta
+  modelproblem
+  nbody
+  ordertest
+  system_example
+  vanderpol
+)
 
-add_executable(modelproblem_high_dim modelproblem_high_dim.cc)
+foreach(loopVAR IN LISTS num1_sources)
+    add_executable(${loopVAR} ${loopVAR}.cc)
+endforeach()
+
 target_link_libraries(modelproblem_high_dim gmp gmpxx)
-
-add_executable(modelproblem_runge_kutta modelproblem_runge_kutta.cc)
-add_executable(modelproblem modelproblem.cc)
-add_executable(nbody nbody.cc)
-add_executable(ordertest ordertest.cc)
-add_executable(system_example system_example.cc)
-add_executable(vanderpol vanderpol.cc)

@@ -6,7 +6,7 @@ if [ -d "$DIR" ]; then
   rm -rf "$DIR"
 fi
 
-clang-format --style=file -i src/*-examples/*.cc
+clang-format --style=file -i src/*-examples/**/*.cc
 
 cmake -S src -B build
 cmake --build build

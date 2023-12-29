@@ -1,12 +1,10 @@
-#include <vector>
 #include <gmpxx.h>
 #include <hdnum/hdnum.hh>
+#include <vector>
 
 using namespace hdnum;
 
-template<class N>
-class WurzelProblem
-{
+template <class N> class WurzelProblem {
 public:
   /** \brief export size_type */
   typedef std::size_t size_type;
@@ -15,52 +13,46 @@ public:
   typedef N number_type;
 
   //! constructor stores parameter lambda
-  WurzelProblem (number_type a_)
-    : a(a_)
-  {}
+  WurzelProblem(number_type a_) : a(a_) {}
 
   //! return number of componentes for the model
-  std::size_t size () const
-  {
-    return 1;
-  }
+  std::size_t size() const { return 1; }
 
   //! model evaluation
-  void F (const Vector<N>& x, Vector<N>& result) const
+  void F(const Vector<N> &x, Vector<N> &result) const
   {
-    result[0] = x[0]*x[0] - a;
+    result[0] = x[0] * x[0] - a;
   }
 
   //! jacobian evaluation needed for implicit solvers
-  void F_x (const Vector<N>& x, DenseMatrix<N>& result) const
+  void F_x(const Vector<N> &x, DenseMatrix<N> &result) const
   {
-    result[0][0] = number_type(2.0)*x[0];
+    result[0][0] = number_type(2.0) * x[0];
   }
 
 private:
   number_type a;
 };
 
-
-int main ()
+int main()
 {
-  //typedef double Number;                 // Zahlentyp
+  // typedef double Number;                 // Zahlentyp
   typedef mpf_class Number;
   mpf_set_default_prec(1024);
 
   typedef WurzelProblem<Number> Problem; // Problemtyp
   Problem problem(2.0);                  // Eine Instanz des Problems
-  
-  Newton newton;                         // Ein Newtonobjekt
-  newton.set_maxit(20);                  // Setze diverse Parameter
+
+  Newton newton;        // Ein Newtonobjekt
+  newton.set_maxit(20); // Setze diverse Parameter
   newton.set_verbosity(2);
   newton.set_reduction(1e-100);
   newton.set_abslimit(1e-100);
   newton.set_linesearchsteps(3);
 
-  Vector<Number> u(problem.size());      // Objekt f�r die Loesung
-  u[0] = 17.0;                           // Startwert
-  newton.solve(problem,u);               // Berechne L�sung
+  Vector<Number> u(problem.size()); // Objekt f�r die Loesung
+  u[0] = 17.0;                      // Startwert
+  newton.solve(problem, u);         // Berechne L�sung
   std::cout << "Ergebnis: " << std::setprecision(50) << u[0] << std::endl;
 
   return 0;

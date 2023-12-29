@@ -9,7 +9,7 @@ int main()
   hdnum::gnuplot("test.dat", x);
 
   hdnum::readVectorFromFile("test.dat", x);
-  std::cout << "x=" << x << std::endl;
+  std::cout << "x = " << x << std::endl;
 
   return 0;
 }

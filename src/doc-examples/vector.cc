@@ -19,7 +19,7 @@ int main()
   hdnum::Vector<std::complex<double>> z(y);
   z = 10 * PI + 50i * PI;
 
-  std::cout << "y=" << y << std::endl << "z=" << z << std::endl;
+  std::cout << "y = " << y << std::endl << "z = " << z << std::endl;
 
   std::cout << "z precision is " << z.precision() << "." << std::endl;
   z.precision(20);

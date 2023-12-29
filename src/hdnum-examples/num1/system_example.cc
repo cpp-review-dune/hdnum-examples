@@ -1,10 +1,10 @@
+#include <hdnum/hdnum.hh>
 #include <iostream>
 #include <vector>
-#include <hdnum/hdnum.hh>
 
 #include "system_example.hh"
 
-int main ()
+int main()
 {
   // Define a number type
   typedef double Number;
@@ -25,15 +25,14 @@ int main ()
   states.push_back(solver.get_state());
 
   // Time loop
-  while (solver.get_time()<5.0-1e-6)
-    {
-      solver.step();
-      times.push_back(solver.get_time());
-      states.push_back(solver.get_state());
-    }
+  while (solver.get_time() < 5.0 - 1e-6) {
+    solver.step();
+    times.push_back(solver.get_time());
+    states.push_back(solver.get_state());
+  }
 
   // Output
-  gnuplot("system_example.dat",times,states);
+  gnuplot("system_example.dat", times, states);
 
   return 0;
 }

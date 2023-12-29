@@ -1,7 +1,12 @@
-add_executable(matrices matrices.cc)
-add_executable(vector vector.cc)
-add_executable(gnuplot gnuplot.cc)
-add_executable(timewatcher timewatcher.cc)
+set(doc_sources
+  matrices
+  vector
+  gnuplot
+  timewatcher
+  multiprecision)
 
-add_executable(multiprecision multiprecision.cc)
+foreach(loopVAR IN LISTS doc_sources)
+    add_executable(${loopVAR} ${loopVAR}.cc)
+endforeach()
+
 target_link_libraries(multiprecision gmp gmpxx)

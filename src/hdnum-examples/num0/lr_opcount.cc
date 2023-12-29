@@ -1,12 +1,12 @@
-#include <iostream>
 #include <hdnum/hdnum.hh>
+#include <iostream>
 
-int main ()
+int main()
 {
   // Setup matrix for LU decomposition
-  const int n=7;
+  const int n = 7;
   typedef hdnum::oc::OpCounter<double> number;
-  hdnum::DenseMatrix<number> A(n,n);
+  hdnum::DenseMatrix<number> A(n, n);
   hdnum::spd(A);
   hdnum::Vector<std::size_t> perm(n);
 

@@ -1,21 +1,25 @@
-add_executable(ausgabe ausgabe.cc)
-add_executable(classes classes.cc)
-add_executable(eingabe eingabe.cc)
-add_executable(funktion funktion.cc)
-add_executable(gaussseidel gaussseidel.cc)
-add_executable(hallohdnum hallohdnum.cc)
-add_executable(matrizen_2 matrizen.cc)
-add_executable(mehrzahlen mehrzahlen.cc)
-add_executable(operationen operationen.cc)
-add_executable(pendel pendel.cc)
-add_executable(pendelmitfunktion pendelmitfunktion.cc)
-add_executable(pendelmitfunktionstemplate pendelmitfunktionstemplate.cc)
-add_executable(pendelmittimer pendelmittimer.cc)
-add_executable(pendelnumerisch pendelnumerisch.cc)
-add_executable(pendelwhile pendelwhile.cc)
-add_executable(string string.cc)
-add_executable(vektoren_2 vektoren.cc)
-add_executable(whitespace whitespace.cc)
-add_executable(zahlen zahlen.cc)
+set(progkurs_sources
+  ausgabe
+  classes
+  eingabe
+  funktion
+  gaussseidel
+  hallohdnum
+  matrizen2
+  mehrzahlen
+  operationen
+  pendel
+  pendelmitfunktion
+  pendelmitfunktionstemplate
+  pendelmittimer
+  pendelnumerisch
+  pendelwhile
+  string
+  vektoren2
+  whitespace
+  zahlen
+)
 
-#target_link_libraries(modelproblem_high_dim gmp gmpxx)
+foreach(loopVAR IN LISTS progkurs_sources)
+    add_executable(${loopVAR} ${loopVAR}.cc)
+endforeach()
