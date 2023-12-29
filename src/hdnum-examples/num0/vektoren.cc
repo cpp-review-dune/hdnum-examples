@@ -1,17 +1,15 @@
-// vektoren.cc
-#include <hdnum/hdnum.hh> // hdnum header
-#include <iostream>       // notwendig zur Ausgabe
+#include <hdnum/src/vector.hh>
 
 template <class T> void product(hdnum::Vector<T> &x)
 {
-  for (int i = 1; i < x.size(); i = i + 1)
+  for (std::size_t i = 1; i < x.size(); i = i + 1)
     x[i] = x[i] * x[i - 1];
 }
 
 template <class T> T sum(hdnum::Vector<T> x)
 {
   T s(0.0);
-  for (int i = 0; i < x.size(); i = i + 1)
+  for (std::size_t i = 0; i < x.size(); i = i + 1)
     s = s + x[i];
   return s;
 }
@@ -26,7 +24,7 @@ int main()
   x.resize(23, 2.71);                // verkleinern geht auch
 
   // Zugriff auf Vektorelemente
-  for (int i = 0; i < x.size(); i = i + 1)
+  for (std::size_t i = 0; i < x.size(); i = i + 1)
     x[i] = i; // Zugriff auf Elemente
 
   // Kopie und Zuweisung
@@ -59,17 +57,18 @@ int main()
   std::cout << w << std::endl; // nun mit mehr Stellen
 
   // frei stehende Funktionen
-  float d = norm(w);               // Euklidsche Norm
-  d = w.two_norm();                // das selbe
+  float d = norm(w); // Euklidsche Norm
+  d = w.two_norm();  // das selbe
+  std::cout << d << std::endl;
   zero(w);                         // das selbe wie w=0.0
   fill(w, (float)1.0);             // das selbe wie w=1.0
   fill(w, (float)0.0, (float)0.1); // w[0]=0, w[1]=0.1, w[2]=0.2, ...
-  unitvector(w, 2);                // kartesischer Einheitsvektor
+  hdnum::unitvector(w, 2);         // kartesischer Einheitsvektor
   gnuplot("test.dat", w);          // gnuplot Ausgabe: i w[i]
   gnuplot("test2.dat", w, z);      // gnuplot Ausgabe: w[i] z[i]
 
   // Funktionsaufruf
   product(x);
-  std::cout << "x=" << x << std::endl;
+  std::cout << "x = " << x << std::endl;
   std::cout << sum(x) << std::endl;
 }

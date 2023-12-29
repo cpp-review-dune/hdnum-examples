@@ -1,6 +1,4 @@
-// matrizen.cc
-#include <hdnum/hdnum.hh> // hdnum header
-#include <iostream>       // notwendig zur Ausgabe
+#include <hdnum/src/densematrix.hh>
 
 // Beispiel wie man A und b f�r ein
 // Gleichungssystem initialisieren k�nnte
@@ -29,8 +27,8 @@ int main()
   hdnum::DenseMatrix<float> C(10, 10, 0.0); // 10x10 Matrix initialisiert
 
   // Zugriff auf Vektorelemente
-  for (int i = 0; i < B.rowsize(); ++i)
-    for (int j = 0; j < B.colsize(); ++j)
+  for (std::size_t i = 0; i < B.rowsize(); ++i)
+    for (std::size_t j = 0; j < B.colsize(); ++j)
       B[i][j] = 0.0; // jetzt ist B initialisiert
 
   // Kopie und Zuweisung
@@ -56,6 +54,7 @@ int main()
   A.sc(x, 1);               // mache x zur ersten Spalte von A
   A.sr(x, 1);               // mache x zur ersten Zeile von A
   float d = A.norm_infty(); // Zeilensummennorm
+  std::cout << d << std::endl;
   d = A.norm_1();           // Spaltensummennorm
 
   // Ausgabe

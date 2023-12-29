@@ -1,4 +1,3 @@
-// whitespace.cc
 #include <cmath>
 #include <iomanip>
 #include <iostream> // includes auf eigener Zeile!

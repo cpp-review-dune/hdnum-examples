@@ -1,6 +1,6 @@
 // precision.cc (Dateiname als Kommentar)
-#include <hdnum/hdnum.hh>
-#include <iomanip>  // für setprecision etc.
+#include <hdnum/src/precision.hh>
+// #include <iomanip>  // für setprecision etc.
 #include <iostream> // notwendig zur Ausgabe
 
 int main()

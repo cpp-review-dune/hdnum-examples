@@ -1,6 +1,6 @@
 #include <gmpxx.h>
-#include <hdnum/hdnum.hh>
-#include <iostream>
+#include <hdnum/src/densematrix.hh>
+#include <hdnum/src/lr.hh>
 
 using namespace hdnum;
 

@@ -1,4 +1,3 @@
-// pendelmitfunktion.cc
 #include <cmath>    // mathematische Funktionen
 #include <iostream> // header für Ein-/Ausgabe
 

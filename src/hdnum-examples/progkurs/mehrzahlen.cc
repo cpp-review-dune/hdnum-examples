@@ -1,4 +1,3 @@
-// mehrzahlen.cc
 #include <complex>  // header für komplexe Zahlen
 #include <iostream> // header für Ein-/Ausgabe
 

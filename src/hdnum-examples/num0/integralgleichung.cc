@@ -1,25 +1,24 @@
+#include <cmath>
 #include <gmpxx.h>
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <math.h>
+#include <hdnum/src/densematrix.hh>
+#include <hdnum/src/lr.hh>
+#include <hdnum/src/qr.hh>
 
-using namespace hdnum;
-
-template <class T> void inverse(DenseMatrix<T> &A)
+template <class T> void inverse(hdnum::DenseMatrix<T> &A)
 {
   // Vektoren für Äquilibrierung und Permutationen
   int n = A.rowsize();
-  Vector<T> s(n);
-  Vector<std::size_t> p(n);
-  Vector<std::size_t> q(n);
+  hdnum::Vector<T> s(n);
+  hdnum::Vector<std::size_t> p(n);
+  hdnum::Vector<std::size_t> q(n);
 
   // LU Zerlegung
   lr_fullpivot(A, p, q);
 
   // Berechne spaltenweise die Inverse
-  Vector<T> x(n);
-  Vector<T> b(n);
-  DenseMatrix<T> Ainv(n, n);
+  hdnum::Vector<T> x(n);
+  hdnum::Vector<T> b(n);
+  hdnum::DenseMatrix<T> Ainv(n, n);
   for (int i = 0; i < n; i++) {
     b = T(0.0);
     b[i] = T(1.0);
@@ -33,10 +32,10 @@ template <class T> void inverse(DenseMatrix<T> &A)
 }
 
 template <typename T>
-DenseMatrix<double> setupA(const T &integrateK, double alpha, double beta,
-                           int n)
+hdnum::DenseMatrix<double> setupA(const T &integrateK, double alpha,
+                                  double beta, int n)
 {
-  DenseMatrix<double> A(n, n);
+  hdnum::DenseMatrix<double> A(n, n);
   double h = (beta - alpha) / n;
   for (int i = 0; i < n; i++) {
     double ci = alpha + (i + 0.5) * h;
@@ -48,9 +47,9 @@ DenseMatrix<double> setupA(const T &integrateK, double alpha, double beta,
 }
 
 template <typename T>
-Vector<double> setupb(const T &f, double alpha, double beta, int n)
+hdnum::Vector<double> setupb(const T &f, double alpha, double beta, int n)
 {
-  Vector<double> b(n);
+  hdnum::Vector<double> b(n);
   double h = (beta - alpha) / n;
   for (int i = 0; i < n; i++)
     b[i] = f(alpha + (i + 0.5) * h);
@@ -86,19 +85,19 @@ int main()
   {
     n = 128;
     gamma = 1e-4;
-    DenseMatrix<double> A_double(setupA(integrateK, alpha, beta, n));
-    Vector<double> b_double(setupb(f, alpha, beta, n));
-    DenseMatrix<double> Q1 = gram_schmidt(A_double);
-    DenseMatrix<double> Q1T(Q1.transpose());
-    DenseMatrix<double> I1(A_double);
+    hdnum::DenseMatrix<double> A_double(setupA(integrateK, alpha, beta, n));
+    hdnum::Vector<double> b_double(setupb(f, alpha, beta, n));
+    hdnum::DenseMatrix<double> Q1 = gram_schmidt(A_double);
+    hdnum::DenseMatrix<double> Q1T(Q1.transpose());
+    hdnum::DenseMatrix<double> I1(A_double);
     I1.mm(Q1T, Q1);
-    for (int i = 0; i < Q1T.rowsize(); i++)
+    for (std::size_t i = 0; i < Q1T.rowsize(); i++)
       I1[i][i] -= 1.0;
-    DenseMatrix<double> Q2 = modified_gram_schmidt(A_double);
-    DenseMatrix<double> Q2T(Q2.transpose());
-    DenseMatrix<double> I2(A_double);
+    hdnum::DenseMatrix<double> Q2 = modified_gram_schmidt(A_double);
+    hdnum::DenseMatrix<double> Q2T(Q2.transpose());
+    hdnum::DenseMatrix<double> I2(A_double);
     I2.mm(Q2T, Q2);
-    for (int i = 0; i < Q2T.rowsize(); i++)
+    for (std::size_t i = 0; i < Q2T.rowsize(); i++)
       I2[i][i] -= 1.0;
     std::cout << "cgs " << I1.norm_infty() << " mgs " << I2.norm_infty()
               << std::endl;
@@ -121,12 +120,12 @@ int main()
       gamma = gi;
 
       // Stelle Gleichungssystem auf
-      DenseMatrix<double> A_double(setupA(integrateK, alpha, beta, n));
-      Vector<double> b_double(setupb(f, alpha, beta, n));
+      hdnum::DenseMatrix<double> A_double(setupA(integrateK, alpha, beta, n));
+      hdnum::Vector<double> b_double(setupb(f, alpha, beta, n));
 
       // kopiere Gleichungssystem
-      DenseMatrix<number> A(n, n);
-      Vector<number> b(n);
+      hdnum::DenseMatrix<number> A(n, n);
+      hdnum::Vector<number> b(n);
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           A[i][j] = A_double[i][j];
@@ -137,9 +136,9 @@ int main()
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
           A[i][j] = A_double[i][j];
-      DenseMatrix<number> Ainv(A);
+      hdnum::DenseMatrix<number> Ainv(A);
       inverse(Ainv);
-      DenseMatrix<number> I(n, n);
+      hdnum::DenseMatrix<number> I(n, n);
       I.mm(Ainv, A);
       for (int i = 0; i < n; i++)
         I[i][i] -= number(1.0);

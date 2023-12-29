@@ -1,6 +1,6 @@
-// pendelwhile.cc
 #include <cmath>    // mathematische Funktionen
 #include <iostream> // header für Ein-/Ausgabe
+
 int main()
 {
   double l(1.34);   // Pendellänge in Meter

@@ -1,4 +1,3 @@
-// operationen.cc
 #include <iostream>
 
 int main()

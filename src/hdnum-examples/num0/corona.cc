@@ -1,14 +1,11 @@
-// corona.cc
-#include <hdnum/hdnum.hh>
-#include <iostream>
-
-using namespace std;
-using namespace hdnum;
+#include <hdnum/src/densematrix.hh>
+#include <hdnum/src/lr.hh>
+#include <hdnum/src/newton.hh>
 
 // vereinbare Typen
 using Number = double;
-using Vec = Vector<Number>;
-using Mat = DenseMatrix<Number>;
+using Vec = hdnum::Vector<Number>;
+using Mat = hdnum::DenseMatrix<Number>;
 
 // interpoliere $u_0$, $\lambda$ aus t_0 und t_i
 Vec interpolation(const Vec &N, const Vec &t, int i)
@@ -23,14 +20,14 @@ Vec linear_fit(const Vec &N, const Vec &t)
 {
   // Erstelle die Matrix A
   Mat A(N.size(), 2);
-  for (int i = 0; i < N.size(); ++i) {
+  for (std::size_t i = 0; i < N.size(); ++i) {
     A[i][0] = 1.0;
     A[i][1] = t[i] - t[0];
   }
 
   // Erstelle die rechte Seite
   Vec logN(N.size());
-  for (int i = 0; i < N.size(); ++i)
+  for (std::size_t i = 0; i < N.size(); ++i)
     logN[i] = log(N[i]);
 
   // berechne Ausgleichsgerade
@@ -40,7 +37,7 @@ Vec linear_fit(const Vec &N, const Vec &t)
   Vec b(2);
   AT.mv(b, logN); // b = A^T * logN
   Vec p(2);
-  linsolve(ATA, p, b);
+  hdnum::linsolve(ATA, p, b);
   return p;
 }
 
@@ -49,7 +46,7 @@ Vec nonlinear_fit(const Vec &N, const Vec &t, const Vec &p0)
   auto F = [&](const Vec &p) // eine Lambdafunktion
   {
     Vec r(2, 0.0);
-    for (int i = 0; i < N.size(); ++i) {
+    for (std::size_t i = 0; i < N.size(); ++i) {
       r[0] +=
           (p[0] * exp(p[1] * (t[i] - t[0])) - N[i]) * exp(p[1] * (t[i] - t[0]));
       r[1] += (p[0] * exp(p[1] * (t[i] - t[0])) - N[i]) * (t[i] - t[0]) *
@@ -59,7 +56,7 @@ Vec nonlinear_fit(const Vec &N, const Vec &t, const Vec &p0)
   };
   auto nlp = getNonlinearProblem(F, p0);
 
-  Newton newton;        // Ein Newtonobjekt
+  hdnum::Newton newton; // Ein Newtonobjekt
   newton.set_maxit(50); // Setze diverse Parameter
   newton.set_verbosity(2);
   newton.set_reduction(1e-10);
@@ -74,7 +71,7 @@ Vec nonlinear_fit(const Vec &N, const Vec &t, const Vec &p0)
 int main()
 {
   using Number = double;
-  using Vec = Vector<Number>;
+  using Vec = hdnum::Vector<Number>;
 
   // Corona Faelle Deutschland ab dem 24.2.2020
   // https://de.wikipedia.org/wiki/COVID-19-Pandemie_in_Deutschland
@@ -87,7 +84,7 @@ int main()
            120479, 123016, 125098, 127584, 130450, 133830, 137439};
   Vec t(N.size());
   fill(t, 0.0, 1.0); // Zeitpunkt in Tagen
-  vector<string> tstring = {
+  std::vector<std::string> tstring = {
       "24/02/2020", "25/02/2020", "26/02/2020", "27/02/2020",
       "28/02/2020", "29/02/2020", "01/03/2020", "02/03/2020",
       "03/03/2020", "04/03/2020", "05/03/2020", "06/03/2020",
@@ -119,34 +116,37 @@ int main()
   // (1) Interpolation aus erstem und m-1-tem
   auto p1 = interpolation(N, t, m - 1);
   Vec u1(bis);
-  for (int i = 0; i < u1.size(); ++i)
+  for (std::size_t i = 0; i < u1.size(); ++i)
     u1[i] = p1[0] * exp(p1[1] * i);
   gnuplot("fit1.dat", tstring, u1);
-  cout << "Anfangswert (1)" << p1[0] << endl;
-  cout << "Verdopplungszeit (1) " << log(2.0) / p1[1] << " Tage" << endl;
+  std::cout << "Anfangswert (1)" << p1[0] << std::endl;
+  std::cout << "Verdopplungszeit (1) " << log(2.0) / p1[1] << " Tage"
+            << std::endl;
 
   // (2) Ausgleichsgerade f�r Logarithmen
   auto p2 = linear_fit(Nsub, tsub);
   Vec u2(bis);
-  for (int i = 0; i < u2.size(); ++i)
+  for (std::size_t i = 0; i < u2.size(); ++i)
     u2[i] = exp(p2[0]) * exp(p2[1] * i);
   gnuplot("fit2.dat", tstring, u2);
-  cout << "Anfangswert (2)" << exp(p2[0]) << std::endl;
-  cout << "Verdopplungszeit (2) " << log(2.0) / p2[1] << " Tage" << std::endl;
+  std::cout << "Anfangswert (2)" << exp(p2[0]) << std::endl;
+  std::cout << "Verdopplungszeit (2) " << log(2.0) / p2[1] << " Tage"
+            << std::endl;
 
   // (3) nichtlineares Problem
   auto p3(p2);
   for (int k = 2; k <= m; k++) {
-    cout << "k=" << k << std::endl;
+    std::cout << "k=" << k << std::endl;
     Nsub = N.sub(0, k);
     tsub = t.sub(0, k);
     p3 = nonlinear_fit(Nsub, tsub, p3);
     Vec u3(bis);
-    for (int i = 0; i < u3.size(); ++i)
+    for (std::size_t i = 0; i < u3.size(); ++i)
       u3[i] = p3[0] * exp(p3[1] * i);
     gnuplot("fit3.dat", tstring, u3);
-    cout << "Anfangswert (3)" << p3[0] << std::endl;
-    cout << "Verdopplungszeit (3) " << log(2.0) / p3[1] << " Tage" << std::endl;
+    std::cout << "Anfangswert (3)" << p3[0] << std::endl;
+    std::cout << "Verdopplungszeit (3) " << log(2.0) / p3[1] << " Tage"
+              << std::endl;
   }
 
   // moving window analysis
@@ -154,13 +154,14 @@ int main()
   Vec verdopplungszeiten4;
   for (int i = 0; i < w - 1; i++)
     verdopplungszeiten4.push_back(0);
-  for (int i = 0; i < N.size() - w + 1; i++) {
+  for (std::size_t i = 0; i < N.size() - w + 1; i++) {
     p3[0] = N[i];
     p3[1] = log(2.0) / 2.0;
     Nsub = N.sub(i, w);
     tsub = t.sub(i, w);
     p3 = nonlinear_fit(Nsub, tsub, p3);
-    cout << "i=" << i << " T_2=" << log(2.0) / p3[1] << " Tage" << std::endl;
+    std::cout << "i=" << i << " T_2=" << log(2.0) / p3[1] << " Tage"
+              << std::endl;
     verdopplungszeiten4.push_back(log(2.0) / p3[1]);
   }
   gnuplot("verdopplungszeiten4.dat", tstring, verdopplungszeiten4);
@@ -169,22 +170,23 @@ int main()
   Vec verdopplungszeiten6;
   for (int i = 0; i < w - 1; i++)
     verdopplungszeiten6.push_back(0);
-  for (int i = 0; i < N.size() - w + 1; i++) {
+  for (std::size_t i = 0; i < N.size() - w + 1; i++) {
     p3[0] = N[i];
     p3[1] = log(2.0) / 2.0;
     Nsub = N.sub(i, w);
     tsub = t.sub(i, w);
     p3 = nonlinear_fit(Nsub, tsub, p3);
-    cout << "i=" << i << " T_2=" << log(2.0) / p3[1] << " Tage" << std::endl;
+    std::cout << "i=" << i << " T_2=" << log(2.0) / p3[1] << " Tage"
+              << std::endl;
     verdopplungszeiten6.push_back(log(2.0) / p3[1]);
   }
   gnuplot("verdopplungszeiten6.dat", tstring, verdopplungszeiten6);
 
   // Verdopplungszeiten naiv
   Vec verdopplungszeiten_naiv(N.size());
-  for (int k = 0; k < N.size(); k++) {
+  for (std::size_t k = 0; k < N.size(); k++) {
     int i_max = 0;
-    for (int i = 0; i <= k; i++)
+    for (std::size_t i = 0; i <= k; i++)
       if (N[i] <= 0.5 * N[k])
         i_max = i;
     verdopplungszeiten_naiv[k] = k - i_max;

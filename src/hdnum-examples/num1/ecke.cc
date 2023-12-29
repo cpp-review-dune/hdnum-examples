@@ -4,11 +4,10 @@
    boundary conditions.
  */
 
-#include <hdnum/hdnum.hh>
+#include <hdnum/src/vector.hh>
 #include <iostream>
 #include <limits>
-#include <math.h>
-#include <vector>
+#include <cmath>
 
 #include "laplace.hh"
 

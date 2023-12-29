@@ -1,5 +1,6 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
+#include <hdnum/src/densematrix.hh>
+#include <hdnum/src/opcounter.hh>
+#include <hdnum/src/lr.hh>
 
 int main()
 {

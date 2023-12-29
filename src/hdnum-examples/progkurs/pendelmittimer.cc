@@ -1,7 +1,6 @@
-// pendelmittimer.cc
-#include <cmath>          // mathematische Funktionen
-#include <hdnum/hdnum.hh> // Zeitmessung
-#include <iostream>       // header f�r Ein-/Ausgabe
+#include <cmath>              // mathematische Funktionen
+#include <hdnum/src/timer.hh> // Zeitmessung
+#include <iostream>           // header f�r Ein-/Ausgabe
 
 int main()
 {

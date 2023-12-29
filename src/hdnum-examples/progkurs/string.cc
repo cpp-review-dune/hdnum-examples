@@ -1,4 +1,3 @@
-// string.cc
 #include <iostream>
 #include <string>
 

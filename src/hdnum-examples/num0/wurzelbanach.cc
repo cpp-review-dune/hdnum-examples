@@ -1,7 +1,5 @@
 #include <gmpxx.h>
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
+#include <hdnum/src/newton.hh>
 
 template <class N> class WurzelProblem {
 public:

@@ -1,4 +1,3 @@
-// eingabe.cc
 #include <cmath>    // für sqrt
 #include <iomanip>  // für setprecision
 #include <iostream> // header für Ein-/Ausgabe

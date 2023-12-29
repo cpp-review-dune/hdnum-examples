@@ -1,6 +1,5 @@
-// ausgabe.cc
-#include <hdnum/hdnum.hh> // hdnum header
-#include <iostream>       // notwendig zur Ausgabe
+#include <hdnum/src/densematrix.hh>
+#include <hdnum/src/vector.hh>
 
 int main()
 {

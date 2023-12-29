@@ -1,6 +1,5 @@
-// vektoren.cc
-#include <hdnum/hdnum.hh> // hdnum header
-#include <iostream>       // notwendig zur Ausgabe
+#include <hdnum/src/vector.hh>
+#include <iostream>
 
 int main()
 {
@@ -13,6 +12,7 @@ int main()
 
   a = x + y;       // Wäre bei Arrays auch nicht so einfach
   float d = x * y; // Skalarprodukt!
+  std::cout << d << std::endl;
 
   return 0;
 }

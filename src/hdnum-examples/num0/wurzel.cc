@@ -1,8 +1,6 @@
 #include <gmpxx.h>
-#include <hdnum/hdnum.hh>
-#include <vector>
-
-using namespace hdnum;
+#include <hdnum/src/densematrix.hh>
+#include <hdnum/src/newton.hh>
 
 template <class N> class WurzelProblem {
 public:
@@ -19,13 +17,13 @@ public:
   std::size_t size() const { return 1; }
 
   //! model evaluation
-  void F(const Vector<N> &x, Vector<N> &result) const
+  void F(const hdnum::Vector<N> &x, hdnum::Vector<N> &result) const
   {
     result[0] = x[0] * x[0] - a;
   }
 
   //! jacobian evaluation needed for implicit solvers
-  void F_x(const Vector<N> &x, DenseMatrix<N> &result) const
+  void F_x(const hdnum::Vector<N> &x, hdnum::DenseMatrix<N> &result) const
   {
     result[0][0] = number_type(2.0) * x[0];
   }
@@ -43,16 +41,16 @@ int main()
   typedef WurzelProblem<Number> Problem; // Problemtyp
   Problem problem(2.0);                  // Eine Instanz des Problems
 
-  Newton newton;        // Ein Newtonobjekt
+  hdnum::Newton newton; // Ein Newtonobjekt
   newton.set_maxit(20); // Setze diverse Parameter
   newton.set_verbosity(2);
   newton.set_reduction(1e-100);
   newton.set_abslimit(1e-100);
   newton.set_linesearchsteps(3);
 
-  Vector<Number> u(problem.size()); // Objekt f�r die Loesung
-  u[0] = 17.0;                      // Startwert
-  newton.solve(problem, u);         // Berechne L�sung
+  hdnum::Vector<Number> u(problem.size()); // Objekt f�r die Loesung
+  u[0] = 17.0;                             // Startwert
+  newton.solve(problem, u);                // Berechne L�sung
   std::cout << "Ergebnis: " << std::setprecision(50) << u[0] << std::endl;
 
   return 0;

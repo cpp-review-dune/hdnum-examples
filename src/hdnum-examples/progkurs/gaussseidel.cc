@@ -1,7 +1,4 @@
-// gaussseidel.cc
-#include <hdnum/hdnum.hh> // hdnum header
-#include <iostream>       // notwendig zur Ausgabe
-#include <vector>
+#include <hdnum/src/vector.hh>
 
 int main()
 {

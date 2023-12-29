@@ -1,5 +1,4 @@
 #include <hdnum/src/densematrix.hh>
-#include <hdnum/src/vector.hh>
 
 int main()
 {

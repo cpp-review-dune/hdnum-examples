@@ -1,6 +1,4 @@
-// matrizen.cc
-#include <hdnum/hdnum.hh> // hdnum header
-#include <iostream>       // notwendig zur Ausgabe
+#include <hdnum/src/densematrix.hh>
 
 int main()
 {
