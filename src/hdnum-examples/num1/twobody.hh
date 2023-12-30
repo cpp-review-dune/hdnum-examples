@@ -5,9 +5,7 @@
     \tparam T a type representing time values
     \tparam N a type representing states and f-values
 */
-template<class T, class N=T>
-class TwoBody : public NBody<T,N,2>
-{
+template <class T, class N = T> class TwoBody : public NBody<T, N, 2> {
 public:
   /** \brief export size_type */
   typedef std::size_t size_type;
@@ -18,16 +16,16 @@ public:
   /** \brief export number_type */
   typedef N number_type;
 
-  // make a the two body model 
-  TwoBody () : NBody<T,N,2>(2)
+  // make a the two body model
+  TwoBody() : NBody<T, N, 2>(2)
   {
-    this->m[0] = 1; 
+    this->m[0] = 1;
     this->m[1] = 0.01;
     this->G = 1.0;
   }
 
   //! set initial state including time value
-  void initialize (T& t0, Vector<N>& x0) const
+  void initialize(T &t0, hdnum::Vector<N> &x0) const
   {
     t0 = 0;
 
@@ -39,8 +37,7 @@ public:
     x0[4] = 1;
     x0[5] = 0;
     x0[6] = 0;
-    x0[7] = 0.2; 
-    NBody<T,N,2>::normalize(x0);
+    x0[7] = 0.2;
+    NBody<T, N, 2>::normalize(x0);
   }
-
 };

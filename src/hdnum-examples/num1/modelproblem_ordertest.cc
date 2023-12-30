@@ -1,8 +1,5 @@
-#include <cmath>
-#include <iostream>
-
-#include "hdnum.hh"
 #include "modelproblem.hh"
+#include <hdnum/src/rungekutta.hh>
 
 int main()
 {
@@ -50,7 +47,7 @@ int main()
   typedef hdnum::RungeKutta<Model> Solver;
   Solver solver(model, A, B, C);
 
-  ordertest(model, solver, 5.0, 1.0, 10);
+  hdnum::ordertest(model, solver, 5.0, 1.0, 10);
 
   return 0;
 }

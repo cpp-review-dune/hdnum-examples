@@ -1,8 +1,6 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
-using namespace hdnum;
+#include <hdnum/src/ode.hh>
+#include <hdnum/src/pde.hh>
+#include <hdnum/src/rungekutta.hh>
 
 /** @brief Example class for a differential equation model
 
@@ -60,10 +58,10 @@ public:
 template <class Solver, class Number>
 Number run_scheme(Solver solver, std::string filename, Number T)
 {
-  std::vector<Number> times;            // store time values here
-  std::vector<Vector<Number>> states;   // store states here
-  times.push_back(solver.get_time());   // initial time
-  states.push_back(solver.get_state()); // initial state
+  std::vector<Number> times;                 // store time values here
+  std::vector<hdnum::Vector<Number>> states; // store states here
+  times.push_back(solver.get_time());        // initial time
+  states.push_back(solver.get_state());      // initial state
 
   int steps = 0;
   while (solver.get_time() < T - 1e-8) // the time loop
@@ -80,12 +78,13 @@ Number run_scheme(Solver solver, std::string filename, Number T)
   auto u = solver.get_state();
   Number error =
       std::sqrt((u0 - u[0]) * (u0 - u[0]) + (u1 - u[1]) * (u1 - u[1]));
-  // std::cout << "file=" << filename << " steps=" << steps << " error=" <<
-  // error << std::endl; gnuplot(filename,times,states); // output model result
+  std::cout << "file=" << filename << " steps=" << steps << " error=" << error
+            << std::endl;
+  hdnum::gnuplot(filename, times, states); // output model result
   return error;
 }
 
-int main(int argc, char **argv)
+int main()
 {
   typedef double Number; // define a number type
   int k = 40;
@@ -103,33 +102,33 @@ int main(int argc, char **argv)
     const Number dt = T / steps[i];
 
     // instantiate explicit solvers
-    EE<Model> solver0(model);
-    Heun2<Model> solver1(model);
-    Heun3<Model> solver2(model);
-    RungeKutta4<Model> solver3(model);
+    hdnum::EE<Model> solver0(model);
+    hdnum::Heun2<Model> solver1(model);
+    hdnum::Heun3<Model> solver2(model);
+    hdnum::RungeKutta4<Model> solver3(model);
     solver0.set_dt(dt);
     solver1.set_dt(dt);
     solver2.set_dt(dt);
     solver3.set_dt(dt);
 
     // instantiate implicit solvers
-    Newton newton;
+    hdnum::Newton newton;
     newton.set_maxit(20);
     newton.set_verbosity(0);
     newton.set_reduction(1e-12);
     newton.set_abslimit(1e-15);
     newton.set_linesearchsteps(3);
-    DIRK<Model, Newton> solver4(model, newton, "Implicit Euler");
-    DIRK<Model, Newton> solver5(model, newton, "Midpoint Rule");
-    DIRK<Model, Newton> solver6(model, newton, "Alexander");
-    DIRK<Model, Newton> solver7(model, newton, "Crouzieux");
+    hdnum::DIRK<Model, hdnum::Newton> solver4(model, newton, "Implicit Euler");
+    hdnum::DIRK<Model, hdnum::Newton> solver5(model, newton, "Midpoint Rule");
+    hdnum::DIRK<Model, hdnum::Newton> solver6(model, newton, "Alexander");
+    hdnum::DIRK<Model, hdnum::Newton> solver7(model, newton, "Crouzieux");
     solver4.set_dt(dt);
     solver5.set_dt(dt);
     solver6.set_dt(dt);
     solver7.set_dt(dt);
 
     // Gauß with s=3
-    DenseMatrix<double> A(3, 3, 0.0);
+    hdnum::DenseMatrix<double> A(3, 3, 0.0);
     A[0][0] = 5.0 / 36.0;
     A[0][1] = (10.0 - 3.0 * sqrt(15.0)) / 45.0;
     A[0][2] = (25.0 - 6.0 * sqrt(15.0)) / 180.0;
@@ -140,17 +139,17 @@ int main(int argc, char **argv)
     A[2][1] = (10.0 + 3.0 * sqrt(15.0)) / 45.0;
     A[2][2] = 5.0 / 36.0;
 
-    Vector<double> B(3, 0.0);
+    hdnum::Vector<double> B(3, 0.0);
     B[0] = 5.0 / 18.0;
     B[1] = 4.0 / 9.0;
     B[2] = 5.0 / 18.0;
 
-    Vector<double> C(3, 0.0);
+    hdnum::Vector<double> C(3, 0.0);
     C[0] = (5.0 - sqrt(15.0)) / 10.0;
     C[1] = 0.5;
     C[2] = (5.0 + sqrt(15.0)) / 10.0;
 
-    RungeKutta<Model> solver8(model, A, B, C);
+    hdnum::RungeKutta<Model> solver8(model, A, B, C);
     solver8.set_dt(dt);
 
     // run the solvers

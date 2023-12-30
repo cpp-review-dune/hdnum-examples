@@ -1,12 +1,6 @@
-#include <cmath>
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
-using namespace hdnum;
-
 #include "expliciteuler.hh"
 #include "modelproblem.hh"
+#include <hdnum/src/ode.hh>
 
 int main()
 {
@@ -15,7 +9,7 @@ int main()
   typedef ModelProblem<Number> Model; // Model type
   Model model(3.0);                   // instantiate model
 
-  typedef Heun3<Model> Solver; // Solver type
+  typedef hdnum::Heun3<Model> Solver; // Solver type
 
   Number dt = 0.25;
   Number last = 0.0;

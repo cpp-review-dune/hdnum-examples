@@ -1,13 +1,10 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
-using namespace hdnum;
+#include <hdnum/src/ode.hh>
+#include <hdnum/src/vector.hh>
 
 int main()
 {
-  typedef double Number;    // define a type for numbers
-  typedef Vector<Number> V; // define a type for states u
+  typedef double Number;           // define a type for numbers
+  typedef hdnum::Vector<Number> V; // define a type for states u
 
   Number lambda = -10.0; // model problem u' = lambda * u
   Number dt = 0.01;      // time step \Delta t
@@ -28,7 +25,7 @@ int main()
     states.push_back(u);              // and new state
   }
 
-  gnuplot("eemp.dat", times, states); // output model result
+  hdnum::gnuplot("eemp.dat", times, states); // output model result
 
   return 0;
 }

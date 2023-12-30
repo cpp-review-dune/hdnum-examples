@@ -1,9 +1,6 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
-#include "expliciteuler.hh"
 #include "modelproblem.hh"
+#include "expliciteuler.hh"
+#include <hdnum/src/ode.hh>
 
 int main()
 {
@@ -28,7 +25,7 @@ int main()
     states.push_back(solver.get_state()); // and state
   }
 
-  gnuplot("mp2-ee-0.02.dat", times, states); // output model result
+  hdnum::gnuplot("mp2-ee-0.02.dat", times, states); // output model result
 
   return 0;
 }

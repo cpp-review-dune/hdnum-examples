@@ -1,6 +1,6 @@
 #include <hdnum/src/densematrix.hh>
-#include <hdnum/src/opcounter.hh>
 #include <hdnum/src/lr.hh>
+#include <hdnum/src/opcounter.hh>
 
 int main()
 {
@@ -20,5 +20,5 @@ int main()
 
   // Print number of operations
   std::cout << "Total number of operations: " << operations << std::endl;
-  std::cout << "In detail:" << std::endl << os.str() << std::endl;
+  std::cout << "In detail: " << std::endl << os.str() << std::endl;
 }

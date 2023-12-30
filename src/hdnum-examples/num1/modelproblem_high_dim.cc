@@ -1,8 +1,6 @@
 #include "modelproblem_high_dim.hh"
 #include <gmpxx.h>
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
+#include <hdnum/src/ode.hh>
 
 int main()
 {

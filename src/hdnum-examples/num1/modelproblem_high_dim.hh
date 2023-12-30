@@ -1,5 +1,8 @@
 #ifndef HDNUM_MODELPROBLEM_HIGH_DIM_HH
 #define HDNUM_MODELPROBLEM_HIGH_DIM_HH
+
+#include <hdnum/src/densematrix.hh>
+
 /** @brief Example class for a differential equation model
 
     The model is

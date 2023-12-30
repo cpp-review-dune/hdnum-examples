@@ -1,14 +1,9 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
-using namespace hdnum;
-
 #include "expliciteuler.hh"
 #include "figureeight.hh"
 #include "restricted3BP.hh"
 #include "threebody.hh"
 #include "twobody.hh"
+#include <hdnum/src/ode.hh>
 
 int main()
 {
@@ -20,19 +15,19 @@ int main()
   // typedef FigureEight<Number> Model; // Model type
   Model model; // instantiate model
 
-  typedef RungeKutta4<Model> SubSolver; // Solver type
-  SubSolver subsolver(model);           // instantiate solver
-  typedef RE<Model, SubSolver> Solver;  // Solver type
-  Solver solver(model, subsolver);      // instantiate solver
-  solver.set_dt(1.0 / 512.0);           // set initial time step
+  typedef hdnum::RungeKutta4<Model> SubSolver; // Solver type
+  SubSolver subsolver(model);                  // instantiate solver
+  typedef hdnum::RE<Model, SubSolver> Solver;  // Solver type
+  Solver solver(model, subsolver);             // instantiate solver
+  solver.set_dt(1.0 / 512.0);                  // set initial time step
   solver.set_TOL(1E-10);
 
-  std::vector<Number> times;            // store time values here
-  std::vector<Vector<Number>> states;   // store states here
-  std::vector<Number> dts;              // store delta t
-  times.push_back(solver.get_time());   // initial time
-  states.push_back(solver.get_state()); // initial state
-  dts.push_back(solver.get_dt());       // initial dt
+  std::vector<Number> times;                 // store time values here
+  std::vector<hdnum::Vector<Number>> states; // store states here
+  std::vector<Number> dts;                   // store delta t
+  times.push_back(solver.get_time());        // initial time
+  states.push_back(solver.get_state());      // initial state
+  dts.push_back(solver.get_dt());            // initial dt
   Number e_0(model.energy(solver.get_state()));
   std::cout << "initial energy: " << std::scientific << std::showpoint
             << std::setprecision(12) << e_0 << std::endl;
@@ -53,7 +48,7 @@ int main()
             << std::setprecision(12) << fabs(e_0 - e_N) / fabs(e_0)
             << std::endl;
   std::cout << "number of f evaluations: " << model.get_count() << std::endl;
-  gnuplot("nbody.dat", times, states, dts); // output model result
+  hdnum::gnuplot("nbody.dat", times, states, dts); // output model result
   // gnuplot("twobody.dat",times,states); // output model result
   // gnuplot("restricted3BP.dat",times,states); // output model result
   // gnuplot("threebody.dat",times,states); // output model result

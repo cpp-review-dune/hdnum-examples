@@ -1,6 +1,5 @@
-#include <cmath>
-#include <hdnum/hdnum.hh> // hdnum header
-#include <iostream>
+#include <hdnum/src/densematrix.hh>
+#include <hdnum/src/lr.hh>
 
 /*
  * The class that contains all important parts of solving the Poisson problem.
@@ -22,13 +21,13 @@ private:
   void solve();
   void output_results() const;
 
-  int p;       // polynomial degree
-  int n_dofs;  // number of degrees of freedom
-  int n_elems; // number of finite elements (intervals)
-
   double h;     // grid size
   double alpha; // model parameter
   double a;     // rhs factor
+
+  int p;       // polynomial degree
+  int n_dofs;  // number of degrees of freedom
+  int n_elems; // number of finite elements (intervals)
 
   hdnum::Vector<double> rhs;      // right hand side (f)
   hdnum::Vector<double> solution; // solution vector (y)

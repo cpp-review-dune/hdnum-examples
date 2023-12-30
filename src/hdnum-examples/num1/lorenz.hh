@@ -1,3 +1,5 @@
+#include <hdnum/src/vector.hh>
+
 /** @brief Lorenz' chaotic problem
 
     \tparam T a type representing time values

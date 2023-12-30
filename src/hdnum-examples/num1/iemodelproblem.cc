@@ -1,13 +1,10 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
-using namespace hdnum;
+#include <hdnum/src/ode.hh>
+#include <hdnum/src/vector.hh>
 
 int main()
 {
   typedef double Number;
-  typedef Vector<Number> V;
+  typedef hdnum::Vector<Number> V;
 
   Number lambda = -10.0;
   Number dt = 0.25;
@@ -28,7 +25,7 @@ int main()
     states.push_back(u);   // and state
   }
 
-  gnuplot("iemp.dat", times, states); // output model result
+  hdnum::gnuplot("iemp.dat", times, states); // output model result
 
   return 0;
 }

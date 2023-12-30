@@ -2,8 +2,6 @@
 #include <hdnum/src/densematrix.hh>
 #include <hdnum/src/lr.hh>
 
-using namespace hdnum;
-
 const int n = 7;
 typedef mpf_class number;
 
@@ -11,22 +9,22 @@ int main()
 {
   mpf_set_default_prec(1024);
 
-  Vector<number> x(n);
-  Vector<number> b(n);
-  Vector<number> s(n);
-  Vector<std::size_t> p(n);
-  Vector<std::size_t> q(n);
-  DenseMatrix<number> A(n, n);
-  fill(x, number(1.0), number(1.0));
-  vandermonde(A, x);
+  hdnum::Vector<number> x(n);
+  hdnum::Vector<number> b(n);
+  hdnum::Vector<number> s(n);
+  hdnum::Vector<std::size_t> p(n);
+  hdnum::Vector<std::size_t> q(n);
+  hdnum::DenseMatrix<number> A(n, n);
+  hdnum::fill(x, number(1.0), number(1.0));
+  hdnum::vandermonde(A, x);
   A.mv(b, x);
-  row_equilibrate(A, s);
+  hdnum::row_equilibrate(A, s);
   x = number(0.0);
-  lr_fullpivot(A, p, q);
-  apply_equilibrate(s, b);
-  permute_forward(p, b);
-  solveL(A, b, b);
-  solveR(A, x, b);
-  permute_backward(q, x);
+  hdnum::lr_fullpivot(A, p, q);
+  hdnum::apply_equilibrate(s, b);
+  hdnum::permute_forward(p, b);
+  hdnum::solveL(A, b, b);
+  hdnum::solveR(A, x, b);
+  hdnum::permute_backward(q, x);
   std::cout << x << std::endl;
 }

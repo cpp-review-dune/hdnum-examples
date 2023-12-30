@@ -1,8 +1,5 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
 #include "system_example.hh"
+#include <hdnum/src/ode.hh>
 
 int main()
 {
@@ -32,7 +29,7 @@ int main()
   }
 
   // Output
-  gnuplot("system_example.dat", times, states);
+  hdnum::gnuplot("system_example.dat", times, states);
 
   return 0;
 }

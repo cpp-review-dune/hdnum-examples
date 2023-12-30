@@ -1,8 +1,4 @@
-#include <hdnum/hdnum.hh>
-#include <iostream>
-#include <vector>
-
-using namespace hdnum;
+#include <hdnum/src/ode.hh>
 
 template <class T, class N = T> class VanDerPolProblem {
 public:
@@ -24,7 +20,7 @@ public:
   std::size_t size() const { return 2; }
 
   //! set initial state including time value
-  void initialize(T &t0, Vector<N> &x0) const
+  void initialize(T &t0, hdnum::Vector<N> &x0) const
   {
     t0 = 0;
     x0[0] = 1.0;
@@ -32,7 +28,7 @@ public:
   }
 
   //! model evaluation
-  void f(const T &t, const Vector<N> &x, Vector<N> &result) const
+  void f(const T &t, const hdnum::Vector<N> &x, hdnum::Vector<N> &result) const
   {
     result[0] = -x[1];
     result[1] = (x[0] - x[1] * x[1] * x[1] / N(3.0) + x[1]) / eps;
@@ -40,7 +36,8 @@ public:
   }
 
   //! model evaluation
-  void f_x(const T &t, const Vector<N> &x, DenseMatrix<N> &result) const
+  void f_x(const T &t, const hdnum::Vector<N> &x,
+           hdnum::DenseMatrix<N> &result) const
   {
     result[0][0] = 0.0;
     result[0][1] = -1.0;
@@ -75,13 +72,13 @@ int main()
                  "Implicit Euler"
                  "Fractional Step Theta"
   */
-  Newton newton;
+  hdnum::Newton newton;
   newton.set_maxit(20);
   newton.set_verbosity(0);
   newton.set_reduction(1e-12);
   newton.set_abslimit(1e-15);
   newton.set_linesearchsteps(3);
-  typedef DIRK<Model, Newton> Solver;
+  typedef hdnum::DIRK<Model, hdnum::Newton> Solver;
   Solver solver(model, newton, "Implicit Euler");
   // Solver solver(model,newton,"Alexander");
 
@@ -89,12 +86,12 @@ int main()
   solver.set_dt(dt); // set initial time step
   // solver.set_verbosity(1);
 
-  std::vector<Number> times;            // store time values here
-  std::vector<Vector<Number>> states;   // store states here
-  std::vector<Number> dts;              // store delta t
-  times.push_back(solver.get_time());   // initial time
-  states.push_back(solver.get_state()); // initial state
-  dts.push_back(solver.get_dt());       // initial dt
+  std::vector<Number> times;                 // store time values here
+  std::vector<hdnum::Vector<Number>> states; // store states here
+  std::vector<Number> dts;                   // store delta t
+  times.push_back(solver.get_time());        // initial time
+  states.push_back(solver.get_state());      // initial state
+  dts.push_back(solver.get_dt());            // initial dt
 
   Number T = 10;
   int steps = 0;
@@ -118,7 +115,7 @@ int main()
             << " number of f evaluations: " << model.get_count()
             << " minimum step width: " << min_dt << std::endl;
   // gnuplot("vanderpol_rk45.dat",times,states,dts); // output model result
-  gnuplot("vanderpol_IE.dat", times, states, dts); // output model result
+  hdnum::gnuplot("vanderpol_IE.dat", times, states, dts); // output model result
 
   return 0;
 }

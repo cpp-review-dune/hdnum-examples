@@ -55,7 +55,7 @@ int main()
   A.sr(x, 1);               // mache x zur ersten Zeile von A
   float d = A.norm_infty(); // Zeilensummennorm
   std::cout << d << std::endl;
-  d = A.norm_1();           // Spaltensummennorm
+  d = A.norm_1(); // Spaltensummennorm
 
   // Ausgabe
   A.iwidth(2);                 // Stellen in Indexausgabe
@@ -64,11 +64,11 @@ int main()
   std::cout << A << std::endl; // sch�ne Ausgabe
 
   // Hilfsfunktionen
-  identity(A); // setze A auf Einheitsmatrix
+  hdnum::identity(A); // setze A auf Einheitsmatrix
   std::cout << A << std::endl;
-  spd(A); // eine s.p.d. Matrix
+  hdnum::spd(A); // eine s.p.d. Matrix
   std::cout << A << std::endl;
-  fill(x, (float)1, (float)1);
-  vandermonde(A, x); // Vandermondematrix
+  hdnum::fill(x, (float)1, (float)1);
+  hdnum::vandermonde(A, x); // Vandermondematrix
   std::cout << A << std::endl;
 }

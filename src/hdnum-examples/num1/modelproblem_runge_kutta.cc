@@ -1,8 +1,6 @@
-#include <iostream>
-#include <vector>
-
 #include "modelproblem.hh"
-#include <hdnum/hdnum.hh>
+#include <hdnum/src/ode.hh>
+#include <hdnum/src/rungekutta.hh>
 
 int main()
 {
@@ -48,7 +46,7 @@ int main()
     states.push_back(solver.get_state()); // and state
   }
 
-  gnuplot("model_runge_kutta.dat", times, states); // output model result
+  hdnum::gnuplot("model_runge_kutta.dat", times, states); // output model result
 
   return 0;
 }

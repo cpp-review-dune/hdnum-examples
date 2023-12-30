@@ -1,4 +1,4 @@
-#include <cmath>
+#include <hdnum/src/vector.hh>
 
 /** @brief Hodgkin Huxley model
 
@@ -31,7 +31,7 @@ public:
   }
 
   //! set initial state including time value
-  void initialize (T& t0, Vector<N>& x0) const
+  void initialize (T& t0, hdnum::Vector<N>& x0) const
   {
     counter = 0;
     t0 = 0;
@@ -39,7 +39,7 @@ public:
   }
 
   //! model evaluation
-  void f (const T& t, const Vector<N>& x, Vector<N>& result) const
+  void f (const T& t, const hdnum::Vector<N>& x, hdnum::Vector<N>& result) const
   {
     number_type V=x[0];
     number_type m=x[1];

@@ -4,19 +4,15 @@
    boundary conditions.
  */
 
-#include <hdnum/src/vector.hh>
-#include <iostream>
-#include <limits>
-#include <cmath>
-
 #include "laplace.hh"
+#include <hdnum/src/pde.hh>
 
 //! Pi constant
 const double pi = 3.141592653;
 
 //! Helper function to calculate the angle of vector x with the
 //! positive x-axes.
-template <class N> N getPhi(const Vector<N> &x)
+template <class N> N getPhi(const hdnum::Vector<N> &x)
 {
   N phi = 0;
   if (x[0] < 0 && x[1] >= 0) {
@@ -48,9 +44,9 @@ public:
   InwardEdgeDomainFunction(N Phi_) : Phi(Phi_) {}
 
   typedef N number_type;
-  bool evaluate(Vector<number_type> &c) const
+  bool evaluate(hdnum::Vector<number_type> &c) const
   {
-    Vector<number_type> x = c;
+    hdnum::Vector<number_type> x = c;
     x[0] -= 1.;
     x[1] -= 1.;
 
@@ -77,12 +73,12 @@ public:
   InwardEdgeBoundaryFunction(N Phi_) : Phi(Phi_) {}
 
   typedef N number_type;
-  bool isDirichlet(const Vector<number_type> &) const { return true; }
+  bool isDirichlet(const hdnum::Vector<number_type> &) const { return true; }
 
   number_type getDirichletValue(const number_type,
-                                const Vector<number_type> &c) const
+                                const hdnum::Vector<number_type> &c) const
   {
-    Vector<number_type> x = c;
+    hdnum::Vector<number_type> x = c;
     x[0] -= 1.;
     x[1] -= 1.;
 
@@ -97,16 +93,15 @@ public:
     return v;
   }
 
-  Vector<number_type> getNeumannValue(const number_type,
-                                      const Vector<number_type> &c) const
+  hdnum::Vector<number_type>
+  getNeumannValue(const number_type, const hdnum::Vector<number_type> &c) const
   {
-    Vector<number_type> sl(c.size());
+    hdnum::Vector<number_type> sl(c.size());
     sl = 1;
     return sl;
   }
 };
 
-using namespace hdnum;
 int main()
 {
   // The number type.
@@ -119,12 +114,12 @@ int main()
   // quadrant [0,0] X [extent[0],extent[1]]. Notice, that the actual
   // computational domain may be only a subset of this space,
   // depending on the domain function.
-  Vector<Number> extent(dim);
+  hdnum::Vector<Number> extent(dim);
   extent[0] = 2.;
   extent[1] = 2.;
 
   // The grid resolution. Here it is 31x31 nodes i.e. 30x30 cells.
-  Vector<size_t> size(dim);
+  hdnum::Vector<size_t> size(dim);
   size[0] = 31;
   size[1] = 31;
 
@@ -142,16 +137,17 @@ int main()
     std::cout << "Setting up the model" << std::endl;
     Model model(extent, size, df, bf);
 
-    typedef StationarySolver<Model> Solver;
+    typedef hdnum::StationarySolver<Model> Solver;
     std::cout << "Setting up the solver" << std::endl;
     Solver solver(model);
 
     std::cout << "Solving" << std::endl;
     solver.solve();
-    Vector<Number> x = solver.get_state();
+    hdnum::Vector<Number> x = solver.get_state();
 
     std::cout << "Output" << std::endl;
-    pde_gnuplot2d("laplace.gp", x, model.getGrid()); // output model result
+    hdnum::pde_gnuplot2d("laplace.gp", x,
+                         model.getGrid()); // output model result
   }
 
   return 0;
